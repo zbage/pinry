@@ -22,7 +22,8 @@ install_requires = [
     'django_compressor',
     'requests',
     'django-images',
-    'django-taggit'
+    'django-taggit',
+    'django-guardian',
 ]
 
 setup(
