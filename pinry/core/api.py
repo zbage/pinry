@@ -6,7 +6,7 @@ from tastypie.exceptions import Unauthorized
 from tastypie.resources import ModelResource
 from django_images.models import Thumbnail
 
-from .models import Pin, Image
+from .models import Pin, Image, Board
 from ..users.models import User
 
 
@@ -39,6 +39,13 @@ class PinryAuthorization(DjangoAuthorization):
             raise Unauthorized("You are not allowed to access that resource.")
 
         return True
+
+
+class BoardResource(ModelResource):
+    class Meta:
+        queryset = Board.objects.all()
+        fields = ['name', 'description']
+        include_resource_uri = False
 
 
 class UserResource(ModelResource):
@@ -93,6 +100,7 @@ class PinResource(ModelResource):
     submitter = fields.ToOneField(UserResource, 'submitter', full=True)
     image = fields.ToOneField(ImageResource, 'image', full=True)
     tags = fields.ListField()
+    board = fields.ToOneField(BoardResource, 'board')
 
     def hydrate_image(self, bundle):
         url = bundle.data.get('url', None)
